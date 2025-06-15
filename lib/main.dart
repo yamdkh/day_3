@@ -1,4 +1,5 @@
 import 'package:day_3/data_layer/dummy_data.dart';
+import 'package:day_3/model/enum_types.dart';
 import 'package:day_3/screens/all_movies.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,14 +30,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key}) {
-    this.trendingMovies.shuffle();
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+   List<MovieModel> trendingMovies = dummyListMovie.toList();
+
+  void onTypeClick(String tag) {
+    getPopularMovieByTag(tag).then((d) {
+
+      setState(() {
+        this.trendingMovies = d;
+      });
+    });
   }
-
-  static List<MovieModel> popularMovies = dummyListMovie.toList();
-
-  final List<MovieModel> trendingMovies = popularMovies.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -54,11 +65,48 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
+
             Text(
               'Movies',
               style: GoogleFonts.poppins(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              height: 40,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children:
+                    MovieType.values.map((t) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: TextButton(
+                          onPressed: () {
+                            onTypeClick(t.name);
+                          },
+
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              Colors.blue,
+                            ),
+                            textStyle: WidgetStatePropertyAll(
+                              TextStyle(color: Colors.blue),
+                            ),
+                          ),
+                          child: Text(
+                            t.name,
+
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
               ),
             ),
             const SizedBox(height: 24),
@@ -68,10 +116,10 @@ class HomeScreen extends StatelessWidget {
               height: 220,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: popularMovies.length,
+                itemCount: trendingMovies.length,
                 separatorBuilder: (_, __) => const SizedBox(width: 16),
                 itemBuilder: (context, index) {
-                  final movie = popularMovies[index];
+                  final movie = trendingMovies[index];
                   return _movieCard(context, movie);
                 },
               ),

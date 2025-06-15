@@ -7,18 +7,9 @@ import 'package:http/http.dart' as http;
 Future<List<MovieModel>> getPopularMovieByTag(String tag) async {
   // https://api.sampleapis.com/movies/drama
 
-  var url = Uri.https('api.sampleapis.com', 'movies/drama');
-
-  print(url.path);
-  print(url);
-  print(url.origin);
+  var url = Uri.https('api.sampleapis.com', 'movies/${tag}');
   var response = await http.get(url);
-
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
-
   return List.from(json.decode(response.body)).map((m) {
-    print(m);
     return MovieModel.fromJson(m);
   }).toList();
 }
