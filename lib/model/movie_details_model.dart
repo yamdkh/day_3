@@ -67,7 +67,7 @@ class MovieDetailsModel {
 
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) =>
       MovieDetailsModel(
-        title: json["Title"],
+        title: json["Title"] ?? "",
         year: json["Year"],
         rated: json["Rated"],
         released: json["Released"],
