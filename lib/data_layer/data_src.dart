@@ -14,16 +14,10 @@ Future<List<MovieModel>> getPopularMovieByTag(String tag) async {
   }).toList();
 }
 
-movieDetailsByImdbId(String id) async {
-  final api = 'http://www.omdbapi.com/?i=tt1772341&apikey=22bf21a&=';
-
-  var url = Uri.https('omdbapi.com', '', {
-    "i": "tt1772341",
-    "apikey": "22bf21a",
-  });
+Future<MovieDetailsModel?> movieDetailsByImdbId(String id) async {
+  var url = Uri.https('omdbapi.com', '', {"i": id, "apikey": "22bf21a"});
   var response = await http.get(url);
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
 
+  return MovieDetailsModel.fromJson(json.decode(response.body));
   // print(await http.read(Uri.https('example.com', 'foobar.txt')));
 }
