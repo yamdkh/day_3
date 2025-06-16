@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'MovieDetailScreen.dart';
+
 class AllMovies extends StatefulWidget {
   final List<MovieModel> movies;
 
@@ -34,62 +36,72 @@ class _AllMoviesState extends State<AllMovies> {
 
           itemBuilder: (ctx, index) {
             final model = widget.movies.elementAt(index);
-            return Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    model.posterUrl,
-                    height: 500,
-                    fit: BoxFit.cover,
+            return GestureDetector(
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => MovieDetailScreen(movie: model),
                   ),
-                ),
-                const SizedBox(height: 24),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 8 * 3,
+                );
+              },
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.network(
+                      model.posterUrl,
+                      height: 500,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        model.title,
-                        style: GoogleFonts.roboto(
-                          fontSize: 22,
+                  const SizedBox(height: 24),
 
-                          fontWeight: FontWeight.w700,
-                        ).apply(overflow: TextOverflow.ellipsis),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 8 * 3,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.title,
+                          style: GoogleFonts.roboto(
+                            fontSize: 22,
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 0,
+                            fontWeight: FontWeight.w700,
+                          ).apply(overflow: TextOverflow.ellipsis),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // textIcon(model.language, Icons.language),
-                            // textIcon(model.runtime, Icons.access_time_outlined),
-                            // textIcon('${model.imdbRating}/10', Icons.star),
-                          ],
-                        ),
-                      ),
 
-                      Text(
-                        model.title,
-                        style: GoogleFonts.roboto(
-                          textStyle: TextStyle(color: Colors.grey.shade700),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 0,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // textIcon(model.language, Icons.language),
+                              // textIcon(model.runtime, Icons.access_time_outlined),
+                              // textIcon('${model.imdbRating}/10', Icons.star),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+
+                        Text(
+                          model.title,
+                          style: GoogleFonts.roboto(
+                            textStyle: TextStyle(color: Colors.grey.shade700),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
-                // Text(model.plot),
-              ],
+                  // Text(model.plot),
+                ],
+              ),
             );
           },
         ),
