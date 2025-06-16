@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:day_3/model/movie_model.dart';
+import 'package:day_3/screens/MovieDetailScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,26 +41,32 @@ class _AllMoviesAllMoviesGridState extends State<AllMoviesGrid> {
 
           itemBuilder: (ctx, index) {
             final model = widget.movies.elementAt(index);
-            return Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    model.posterUrl,
-                    fit: BoxFit.fill,
-                    height: 100,
-                    width: 100,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (ctx) => MovieDetailScreen(movie: model),
                   ),
-                ),
+                );
+              },
+              child: Column(
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: model.posterUrl,
+                    height: 100,
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
 
-                Text(
-                  model.title,
-                  style: GoogleFonts.roboto(
-                    fontWeight: FontWeight.w700,
-                  ).apply(overflow: TextOverflow.ellipsis),
-                ),
-                // Text(model.plot),
-              ],
+                  Text(
+                    model.title,
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w700,
+                    ).apply(overflow: TextOverflow.ellipsis),
+                  ),
+                  // Text(model.plot),
+                ],
+              ),
             );
           },
         ),
