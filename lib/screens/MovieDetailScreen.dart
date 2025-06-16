@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -105,6 +106,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                   ),
                 ),
 
+                SizedBox(height: 30),
+                CupertinoButton(
+                  child: Text(
+                    'Back',
+                    style: GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+
+                    Navigator.pop(context);
+                  },
+                ),
                 // Text(model.plot),
               ],
             ),

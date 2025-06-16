@@ -1,4 +1,4 @@
-
+import 'package:day_3/screens/all_movies_grid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +12,7 @@ import 'MovieDetailScreen.dart';
 import 'all_movies.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -23,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onTypeClick(String tag) {
     getPopularMovieByTag(tag).then((d) {
-
       setState(() {
         this.trendingMovies = d;
       });
@@ -60,38 +59,42 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children:
-                MovieType.values.map((t) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: TextButton(
-                      onPressed: () {
-                        onTypeClick(t.name);
-                      },
+                    MovieType.values.map((t) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: TextButton(
+                          onPressed: () {
+                            onTypeClick(t.name);
+                          },
 
-                      style: ButtonStyle(
-                        backgroundColor: WidgetStatePropertyAll(
-                          Colors.blue,
-                        ),
-                        textStyle: WidgetStatePropertyAll(
-                          TextStyle(color: Colors.blue),
-                        ),
-                      ),
-                      child: Text(
-                        t.name,
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll(
+                              Colors.blue,
+                            ),
+                            textStyle: WidgetStatePropertyAll(
+                              TextStyle(color: Colors.blue),
+                            ),
+                          ),
+                          child: Text(
+                            t.name,
 
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      );
+                    }).toList(),
               ),
             ),
             const SizedBox(height: 24),
-            _sectionTitle('Popular', context),
+            _sectionTitle(
+              'Popular',
+              context,
+              AllMovies(movies: dummyListMovie),
+            ),
             const SizedBox(height: 12),
             SizedBox(
               height: 220,
@@ -106,7 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 24),
-            _sectionTitle('Trending', context),
+            _sectionTitle(
+              'Trending',
+              context,
+              AllMoviesGrid(movies: dummyListMovie),
+            ),
             const SizedBox(height: 12),
             SizedBox(
               height: 220,
@@ -128,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _sectionTitle(String title, BuildContext context) {
+  Widget _sectionTitle(String title, BuildContext context, Widget nextPage) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -140,9 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (ctx) => AllMovies(movies: dummyListMovie),
-              ),
+              MaterialPageRoute(builder: (ctx) => nextPage),
             );
           },
           child: Row(
